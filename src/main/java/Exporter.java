@@ -92,9 +92,15 @@ public class Exporter {
                     if(issueObj.has("body") && !issueObj.isNull("body")){
                         row.createCell(2).setCellValue(issueObj.getString("body"));
                     }
+                    if(issueObj.has("body") && !issueObj.isNull("body")){
+                        row.createCell(2).setCellValue(issueObj.getString("body"));
+                    }
+                    if(issueObj.has("assignees") && !issueObj.isNull("assignees")){
+                        row.createCell(5).setCellValue(getAssegnees(issueObj.getJSONArray("assignees")));
+
+                    }
                     row.createCell(3).setCellValue("Labels");
                     row.createCell(4).setCellValue(issueObj.getString("state"));
-                    row.createCell(5).setCellValue("Assignees");
                     row.createCell(6).setCellValue(issueObj.getString("created_at"));
                     row.createCell(7).setCellValue(issueObj.getString("updated_at"));
                     if(issueObj.has("closed_at") && !issueObj.isNull("closed_at")){
@@ -113,5 +119,17 @@ public class Exporter {
             e.printStackTrace();
         }
 
+    }
+
+    private static String getAssegnees(JSONArray assigneesJSON){
+        String assignees = "";
+        if(!assigneesJSON.isEmpty()){
+            for (Object a: assigneesJSON) {
+                JSONObject user = (JSONObject) a;
+                assignees+=user.getString("login");
+                assignees+="\n";
+            }
+        }
+        return assignees;
     }
 }
